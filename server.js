@@ -42,35 +42,43 @@ let firstBook = new Book({
   status: 'available',
   email: 'theanthonyjohnson@gmail.com'
 });
-
+ firstBook.save( (err, bookFromMongo) => {
+   console.log(bookFromMongo);
+ });
 let secondBook = new Book({
   name: 'hitchhikers guide to the galaxy',
   description: 'sci-fi',
   status: 'available',
   email: 'theanthonyjohnson@gmail.com'
 });
-
+secondBook.save( (err, bookFromMongo) => {
+  console.log(bookFromMongo);
+ });
 let thirdBook = new Book ({
   name: 'harry potter and the sorcers stone',
   description: 'fantasy',
   status: 'available',
   email: 'theanthonyjohnson@gmail.com'
 });
+thirdBook.save( (err, bookFromMongo) => {
+  console.log(bookFromMongo);
+ });
 
 app.get('/books', (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
-  // make sure the token was valid
+  console.log(token);
   jwt.verify(token, getKey, {}, function(err, user) {
     if(err) {
       res.status(500).send('invalid token');
+      console.log(user);
     } else {
       let userEmail = user.email;
       Book.find({email: userEmail}, (err, books) => {
         console.log(books);
         res.send(books);
-      });
-    }
+      })
+      }
+    })
   });
-});
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
